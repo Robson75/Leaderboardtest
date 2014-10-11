@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.games.Games;
@@ -22,6 +23,7 @@ public class MainActivity extends BaseGameActivity implements View.OnClickListen
     private int number;
     private Random rand;
     private TextView info;
+    private EditText highScoreEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class MainActivity extends BaseGameActivity implements View.OnClickListen
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.show_achievements).setOnClickListener(this);
+        findViewById(R.id.show_leaderboard).setOnClickListener(this);
 
         button0=(Button)findViewById(R.id.btn0);
         button1=(Button)findViewById(R.id.btn1);
@@ -42,6 +45,8 @@ public class MainActivity extends BaseGameActivity implements View.OnClickListen
         button8=(Button)findViewById(R.id.btn8);
         button9=(Button)findViewById(R.id.btn9);
         buttonAgain=(Button)findViewById(R.id.btnAgain);
+
+        highScoreEditText = (EditText) findViewById(R.id.high_score_input);
 
         info=(TextView)findViewById(R.id.guess_text);
         rand=new Random();
@@ -74,7 +79,7 @@ public class MainActivity extends BaseGameActivity implements View.OnClickListen
         button9.setEnabled(true); button9.setTextColor(Color.WHITE);
         buttonAgain.setEnabled(false); buttonAgain.setTextColor(Color.parseColor("#ffffff00"));
     }
-    public void btnPressed(View v){
+    public void btnPressed(View v) {
         int btn = Integer.parseInt(v.getTag().toString());
         if(btn<0){
             //again btn
@@ -96,6 +101,20 @@ public class MainActivity extends BaseGameActivity implements View.OnClickListen
             disableNumbers();
         }
     }
+    public void setHighScore(View v ) {
+        if (getApiClient().isConnected()) {
+            int highScore = 0;
+            String hs = highScoreEditText.getText().toString();
+            try {
+                highScore = Integer.parseInt(hs);
+                Games.Leaderboards.submitScore(getApiClient(),
+                        getString(R.string.test_leader_board_1),
+                        highScore);
+            } catch (NumberFormatException nfe) {
+                // Will not do anything in case of illegal input.
+            }
+        }
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.sign_in_button) {
@@ -109,6 +128,11 @@ public class MainActivity extends BaseGameActivity implements View.OnClickListen
         else if (view.getId() == R.id.show_achievements){
             startActivityForResult(Games.Achievements.getAchievementsIntent(
                     getApiClient()), 1);
+        }
+        else if (view.getId() == R.id.show_leaderboard) {
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(
+                            getApiClient(), getString(R.string.test_leader_board_1)),
+                    2);
         }
     }
 

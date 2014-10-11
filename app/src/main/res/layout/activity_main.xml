@@ -39,9 +39,16 @@
             android:layout_height="wrap_content"
             android:text="Achievements" />
 
+        <Button
+            android:id="@+id/show_leaderboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leaderboard" />
+
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/button_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/sign_in_buttons" >
@@ -270,4 +277,45 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/high_score_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_panel" >
+
+        <TextView
+            android:id="@+id/high_score_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Set new high score!"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/high_score_panel"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/high_score_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="2"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/high_score_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="setHighScore"
+            android:padding="5dp"
+            android:text="Send" />
+    </LinearLayout>
 </RelativeLayout>
